@@ -1,0 +1,73 @@
+.searchbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #360988;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+        0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    z-index: 100;
+}
+
+.searchForm {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.button {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    left: calc(50% + 170px);
+    background-color: #0000ff;
+    border: 0;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 250ms ease;
+}
+
+.button:hover {
+    background-color: #080888;
+}
+
+.icon {
+    width: 32px;
+    height: 32px;
+}
+
+.input {
+    height: 40px;
+    width: 400px;
+    font: inherit;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.input::placeholder {
+    font: inherit;
+    font-size: 18px;
+}
+
+.load {
+    width: 36px;
+    height: 36px;
+    transform-origin: center center;
+    animation: spinner 1s linear infinite;
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
