@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import s from './ImageGallery.module.css';
 import { ImageGalleryItem } from 'components';
 
-export default function ImageGallery({ images, onClick }) {
+const ImageGallery = ({ images, onClick }) => {
     if (images.length > 0) {
         return (
             <ul className={s.gallery}>
@@ -18,7 +18,7 @@ export default function ImageGallery({ images, onClick }) {
             </ul>
         );
     }
-}
+};
 
 ImageGallery.propTypes = {
     images: PropTypes.arrayOf(
@@ -30,3 +30,5 @@ ImageGallery.propTypes = {
     ).isRequired,
     onClick: PropTypes.func.isRequired,
 };
+
+export default ImageGallery;

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import s from './Button.module.css';
 import icon from '../../images/loading.svg';
 
-export default function Button({ onClick, status }) {
+const Button = ({ onClick, status }) => {
     if (status === '') return;
     if (status === 'endGallery')
         return (
@@ -30,9 +30,11 @@ export default function Button({ onClick, status }) {
             {status === 'endLoading' && <span>Load more</span>}
         </button>
     );
-}
+};
 
 Button.propTypes = {
     onClick: PropTypes.func.isRequired,
     status: PropTypes.string.isRequired,
 };
+
+export default Button;

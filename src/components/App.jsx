@@ -1,68 +1,62 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { Searchbar, ImageGallery, Button, Modal } from '../components';
 import delivery from '../js/delivery';
 
-export class App extends React.Component {
-    state = {
-        images: [],
-        status: '',
-        isModalShow: false,
-        modalUrl: '',
-    };
+const App = () => {
+    const [images, setImages] = useState([]);
+    const [status, setStatus] = useState('');
+    const [isModalShow, setIsModalShow] = useState(false);
+    const [modalUrl, setModalUrl] = useState('');
 
-    componentDidUpdate(prevProps, prevState) {
-        if (delivery.page > 2 && prevState.images !== this.state.images)
+    useEffect(() => {
+        if (delivery.page > 2)
             window.scrollBy({
                 top: window.innerHeight - 245,
                 behavior: 'smooth',
             });
-    }
+    }, [images]);
 
-    handleSubmit = event => {
+    const handleSubmit = event => {
         event.preventDefault();
         if (delivery.query !== event.target[1].value.trim()) {
             delivery.query = event.target[1].value.trim();
-            this.renderGallery();
+            renderGallery();
             event.target[1].value = '';
         }
     };
 
-    renderGallery = async () => {
+    const renderGallery = async () => {
         if (delivery.page === 1) {
-            this.setState({ status: 'newSearch', images: [] });
-        } else this.setState({ status: 'loading' });
+            setStatus('newSearch');
+            setImages([]);
+        } else setStatus('loading');
         try {
             const data = await delivery.fetch();
-            this.setState(prevState => ({
-                images: [...prevState.images, ...data.hits],
-                status: data.isEnd ? 'endGallery' : 'endLoading',
-            }));
-            !data.total && this.setState({ status: 'noImages' });
+            setStatus(data.isEnd ? 'endGallery' : 'endLoading');
+            setImages(state => [...state, ...data.hits]);
+            !data.total && setStatus('noImages');
         } catch (error) {
             console.log('error: ', error);
         }
     };
 
-    toggleModal = (url = '') => {
-        this.setState(prevState => ({
-            isModalShow: !prevState.isModalShow,
-            modalUrl: url,
-        }));
+    const toggleModal = (url = '') => {
+        setIsModalShow(state => !state);
+        setModalUrl(url);
     };
 
-    render() {
-        const { images, status, isModalShow, modalUrl } = this.state;
-        return (
-            <div className="app">
-                <Searchbar onSubmit={this.handleSubmit} status={status} />
-                <ImageGallery images={images} onClick={this.toggleModal} />
-                <Button onClick={this.renderGallery} status={status} />
-                {isModalShow && (
-                    <Modal onClose={this.toggleModal}>
-                        <img src={modalUrl} alt={modalUrl} />
-                    </Modal>
-                )}
-            </div>
-        );
-    }
-}
+    return (
+        <div className="app">
+            <Searchbar onSubmit={handleSubmit} status={status} />
+            <ImageGallery images={images} onClick={toggleModal} />
+            <Button onClick={renderGallery} status={status} />
+            {isModalShow && (
+                <Modal onClose={toggleModal}>
+                    <img src={modalUrl} alt={modalUrl} />
+                </Modal>
+            )}
+        </div>
+    );
+};
+
+export default App;
